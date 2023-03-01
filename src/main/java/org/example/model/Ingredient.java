@@ -110,4 +110,8 @@ public class Ingredient {
     public void set__v(int __v) {
         this.__v = __v;
     }
+
+    public String toString(){
+        return String.format("Ingredient with parameters: _id = %s, name = %s, type = %s", _id, name, type);
+    }
 }

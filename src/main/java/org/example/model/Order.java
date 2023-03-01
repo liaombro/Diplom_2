@@ -1,64 +1,91 @@
 package org.example.model;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
-import java.util.LinkedList;
 import java.util.List;
 
 public class Order {
+    List<Ingredient> ingredients;
+    String _id;
+    User owner;
+    String status;
+    String name;
+    String createdAt;
+    String updatedAt;
+    int number;
+    int price;
 
-    List<String> ingredients;
-
-    public static final String BUN = "bun";
-    public static final String MAIN = "main";
-    public static final String SAUCE = "sauce";
-
-    public Order(List<Ingredient> ingredients) {
-        for (Ingredient ingredient : ingredients) {
-            this.ingredients.add(ingredient.get_id());
-        }
+    public List<Ingredient> getIngredients() {
+        return ingredients;
     }
 
-    public Order() {
-        this.ingredients = new LinkedList<>();
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 
-    public void addRandomBun(IngredientsResponse allIngredients) {
-        for (Ingredient ingredient : allIngredients.getData()) {
-            String type = ingredient.getType();
-
-            if (type.equals(BUN)) {
-                String ingredientHash = ingredient.get_id();
-                ingredients.add(ingredientHash);
-            }
-        }
+    public String get_id() {
+        return _id;
     }
 
-    public void addRandomFilling(IngredientsResponse allIngredients) {
-        for (Ingredient ingredient : allIngredients.getData()) {
-            String type = ingredient.getType();
-
-            if (type.equals(MAIN)) {
-                String ingredientHash = ingredient.get_id();
-                ingredients.add(ingredientHash);
-            }
-        }
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
-    public void addRandomSauce(IngredientsResponse allIngredients) {
-        for (Ingredient ingredient : allIngredients.getData()) {
-            String type = ingredient.getType();
-
-            if (type.equals(SAUCE)) {
-                String ingredientHash = ingredient.get_id();
-                ingredients.add(ingredientHash);
-            }
-        }
+    public User getOwner() {
+        return owner;
     }
 
-    public void addIncorrectIngredient() {
-        String ingredientHash = RandomStringUtils.randomNumeric(24);
-        ingredients.add(ingredientHash);
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public String toString() {
+        return String.format("Order with parameters: ingredients=%s, name=%s, status=%s, number=%s", ingredients, name, status, number);
+    }
 }
