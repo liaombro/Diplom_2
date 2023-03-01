@@ -1,9 +1,15 @@
 package org.example.model;
 
+import io.qameta.allure.internal.shadowed.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
-public class Order {
-    List<Ingredient> ingredients;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public abstract class Order {
+
+
+    //List<Ingredient> ingredients;
+
     String _id;
     User owner;
     String status;
@@ -12,14 +18,6 @@ public class Order {
     String updatedAt;
     int number;
     int price;
-
-    public List<Ingredient> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
-    }
 
     public String get_id() {
         return _id;
@@ -85,7 +83,14 @@ public class Order {
         this.price = price;
     }
 
-    public String toString() {
-        return String.format("Order with parameters: ingredients=%s, name=%s, status=%s, number=%s", ingredients, name, status, number);
+    public abstract void setIngredientHashes(List<String> ingredientHashes);
+    public abstract void setIngredients(List<Ingredient> ingredients);
+
+    public static OrderWithHashes getInstanceWithHashes(){
+        return new OrderWithHashes();
+    }
+
+    public static OrderWithObjects getInstanceWithObjects(){
+        return new OrderWithObjects();
     }
 }

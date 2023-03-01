@@ -1,5 +1,6 @@
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
+import org.example.model.ErrorMessage;
 import org.example.model.User;
 import org.example.service.CreateUserApi;
 import org.example.service.DeleteUserApi;
@@ -11,6 +12,10 @@ public class TestBase {
     protected DeleteUserApi deleteUserApi = new DeleteUserApi();
     User user;
     String authToken;
+    public static final String NO_AUTH_TOKEN = "";
+    public static final String UNAUTHORIZED_ERROR = "You should be authorised";
+
+
     @Before
     @Step("Создание пользователя")
     public void createUser() {
@@ -24,4 +29,9 @@ public class TestBase {
     public void deleteUser() {
         deleteUserApi.deleteUser(authToken);
     }
+
+    public ErrorMessage prepareExpectedErrorResponse(String message) {
+        return new ErrorMessage(false, message);
+    }
+
 }

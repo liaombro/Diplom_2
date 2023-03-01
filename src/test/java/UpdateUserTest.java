@@ -17,7 +17,6 @@ public class UpdateUserTest extends TestBase {
     UpdateUserApi api = new UpdateUserApi();
 
     LoginUserApi loginUserApi = new LoginUserApi();
-    public static final String UNAUTHORIZED_ERROR = "You should be authorised";
 
 
     public UserResponse prepareExpectedResponse(User user) {

@@ -5,10 +5,10 @@ import org.assertj.core.api.Assertions;
 import java.util.LinkedList;
 import java.util.List;
 
-public class OrderResponse {
+public class PostOrderResponse {
         boolean success;
         String name;
-        Order order;
+        OrderWithObjects order;
 
     public boolean isSuccess() {
         return success;
@@ -26,17 +26,17 @@ public class OrderResponse {
         this.name = name;
     }
 
-    public Order getOrder() {
+    public OrderWithObjects getOrder() {
         return order;
     }
 
-    public void setOrder(Order order) {
+    public void setOrder(OrderWithObjects order) {
         this.order = order;
     }
 
     public void setIngredientHashes(List<String> ingredientHashes){
         List<Ingredient> ingredients = new LinkedList<>();
-        Order order = new Order();
+        OrderWithObjects order = Order.getInstanceWithObjects();
 
         for (String ingredientHash : ingredientHashes){
             Ingredient ingredient = new Ingredient();
@@ -46,14 +46,14 @@ public class OrderResponse {
         order.setIngredients(ingredients);
         this.order = order;
     }
-    public static void assertEqualResponsesByIngredientsAndSuccess(OrderResponse actual, OrderResponse expected){
+    public static void assertEqualResponsesByIngredientsAndSuccess(PostOrderResponse actual, PostOrderResponse expected){
         Assertions.assertThat(actual)
                 .usingRecursiveComparison()
                 .comparingOnlyFields("order.ingredients._id", "success")
                 .isEqualTo(expected);
     }
 
-    public static void assertEqualResponsesBySuccess(OrderResponse actual, OrderResponse expected){
+    public static void assertEqualResponsesBySuccess(PostOrderResponse actual, PostOrderResponse expected){
         Assertions.assertThat(actual)
                 .usingRecursiveComparison()
                 .comparingOnlyFields("success")

@@ -5,7 +5,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import java.util.LinkedList;
 import java.util.List;
 
-public class OrderRequest {
+public class PostOrderRequest {
 
 
     List<String> ingredients;
@@ -13,13 +13,13 @@ public class OrderRequest {
     public static final String MAIN = "main";
     public static final String SAUCE = "sauce";
 
-    public OrderRequest(List<Ingredient> ingredients) {
+    public PostOrderRequest(List<Ingredient> ingredients) {
         for (Ingredient ingredient : ingredients) {
             this.ingredients.add(ingredient.get_id());
         }
     }
 
-    public OrderRequest() {
+    public PostOrderRequest() {
         this.ingredients = new LinkedList<>();
     }
 
