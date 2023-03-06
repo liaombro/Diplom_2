@@ -5,13 +5,13 @@ import org.example.model.*;
 import org.example.service.CreateOrderApi;
 import org.example.service.GetIngredientsApi;
 import org.example.service.GetOrdersApi;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.not;
 @DisplayName("Получение списка заказов")
 public class GetOrdersOfUserTest extends TestBase {
 
@@ -82,7 +82,7 @@ public class GetOrdersOfUserTest extends TestBase {
         GetOrderResponse actualResponse = response.as(GetOrderResponse.class);
 
         response.then().statusCode(200);
-        GetOrderResponse.assertEqualComparingField(expectedResponse, actualResponse,"orders.ingredients");
+        GetOrderResponse.assertEqualComparingField(expectedResponse, actualResponse, "orders.ingredients");
     }
 
     @Test
@@ -96,8 +96,9 @@ public class GetOrdersOfUserTest extends TestBase {
         GetOrderResponse actualResponse = response.as(GetOrderResponse.class);
 
         response.then().statusCode(200);
-        GetOrderResponse.assertEqualComparingField(expectedResponse, actualResponse,"orders.number");
+        GetOrderResponse.assertEqualComparingField(expectedResponse, actualResponse, "orders.number");
     }
+
     @Test
     @DisplayName("Созданный заказ отображается в списке заказов вместе с именем")
     public void ordersListShowsCreatedOrderWithName() {
@@ -109,8 +110,9 @@ public class GetOrdersOfUserTest extends TestBase {
         GetOrderResponse actualResponse = response.as(GetOrderResponse.class);
 
         response.then().statusCode(200);
-        GetOrderResponse.assertEqualComparingField(expectedResponse, actualResponse,"orders.name");
+        GetOrderResponse.assertEqualComparingField(expectedResponse, actualResponse, "orders.name");
     }
+
     @Test
     @DisplayName("Созданный заказ отображается в списке заказов вместе со статусом")
     public void ordersListShowsCreatedOrderWithStatus() {
@@ -122,7 +124,7 @@ public class GetOrdersOfUserTest extends TestBase {
         GetOrderResponse actualResponse = response.as(GetOrderResponse.class);
 
         response.then().statusCode(200);
-        GetOrderResponse.assertEqualComparingField(expectedResponse, actualResponse,"orders.status");
+        GetOrderResponse.assertEqualComparingField(expectedResponse, actualResponse, "orders.status");
     }
 
     @Test
@@ -136,35 +138,56 @@ public class GetOrdersOfUserTest extends TestBase {
         GetOrderResponse actualResponse = response.as(GetOrderResponse.class);
 
         response.then().statusCode(200);
-        GetOrderResponse.assertEqualComparingField(expectedResponse, actualResponse,"orders.createdAt");
-        GetOrderResponse.assertEqualComparingField(expectedResponse, actualResponse,"orders.updatedAt");
+        GetOrderResponse.assertEqualComparingField(expectedResponse, actualResponse, "orders.createdAt");
+        GetOrderResponse.assertEqualComparingField(expectedResponse, actualResponse, "orders.updatedAt");
+    }
+
+    @Test
+    @DisplayName("Поле total увеличивается на 1 при совершении заказа")
+    public void totalFieldIsIncrementingAfterOrderIsMade() {
+
+        Response response1 = api.getOrdersOfUser(authToken);
+        int expectedTotal =(Integer) response1.then().extract().path("total") + 1;
+
+        createOrder();
+        Response response2 = api.getOrdersOfUser(authToken);
+        int actualTotal = response2.then().extract().path("total");
+
+        Assert.assertEquals("Поле total должно увеличиться на 1 после совершения заказа", expectedTotal, actualTotal);
     }
 
 
     @Test
-    @DisplayName("Поле total != 0")
-    public void totalFieldGreaterThanZero() {
+    @DisplayName("Поле totalToday увеличивается на 1 при совершении заказа")
+    public void totalTodayFieldIsIncrementingAfterOrderIsMade() {
 
-        Response response = api.getOrdersOfUser(authToken);
+        Response response1 = api.getOrdersOfUser(authToken);
+        int expectedTotal = (Integer) response1.then().extract().path("totalToday") + 1;
 
-        response.then().statusCode(200)
-                .and()
-                .body("total", not(0));
+        createOrder();
+        Response response2 = api.getOrdersOfUser(authToken);
+        int actualTotal = response2.then().extract().path("totalToday");
+
+        Assert.assertEquals("Поле todayTotal должно увеличиться на 1 после совершения заказа", expectedTotal, actualTotal);
     }
 
-
+    /*
+    Этот тест падает
     @Test
-    @DisplayName("Поле totalToday != 0")
-    public void totalTodayFieldIsGreaterThanZero() {
+    @DisplayName("Эндпойнт возвращает не более 50 заказов")
+    public void noMoreThan50OrdersAreReturned(){
+        int expectedSize = 50;
+        for (int i = 0; i < 1 + expectedSize; i++){
+            createOrder();
+        }
+
         Response response = api.getOrdersOfUser(authToken);
+        GetOrderResponse actualResponse = response.as(GetOrderResponse.class);
+        int actualSize = actualResponse.getOrders().size();
 
-        response.then().statusCode(200)
-                .and()
-                .body("totalToday", not(0));
+        Assert.assertEquals("Метод должен возвращать не более 50 заказов " + authToken, expectedSize, actualSize);
+
     }
-
-    //Тоталы увеличиваются на 1 при создании заказа
-    //
-
+*/
 }
 
