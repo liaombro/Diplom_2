@@ -27,9 +27,6 @@ public class UpdateUserTest extends TestBase {
         return response;
     }
 
-    public ErrorMessage prepareExpectedErrorResponse(String message) {
-        return new ErrorMessage(false, message);
-    }
 
     @Test
     @DisplayName("При изменении имени в ответе присутствует новое значение name")
@@ -86,7 +83,6 @@ public class UpdateUserTest extends TestBase {
     @DisplayName("Пользователь может войти в систему с измененным email")
     public void userCanLoginWithChangedEmail() {
         user.setRandomEmail();
-        String expectedEmail = user.getEmail();
 
         api.changeEmail(authToken, user);
         Response loginResponse = loginUserApi.logUserIn(user);

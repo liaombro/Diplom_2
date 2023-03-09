@@ -1,9 +1,11 @@
 package org.example.service;
 
+import io.qameta.allure.Param;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import org.example.model.User;
 
+import static io.qameta.allure.model.Parameter.Mode.MASKED;
 import static io.restassured.RestAssured.given;
 
 public class UpdateUserApi extends BaseApi {
@@ -12,7 +14,7 @@ public class UpdateUserApi extends BaseApi {
     public static final String UPDATE_USER_ENDPOINT = String.format("%s/api/auth/user", BASE_ENDPOINT);
 
 
-    private Response patchRequest(String authToken, User user) {
+    private Response patchRequest(@Param(mode=MASKED) String authToken, User user) {
         if (authToken.length() > 0) {
             return given()
                     .spec(SPEC)
@@ -30,7 +32,7 @@ public class UpdateUserApi extends BaseApi {
     }
 
     @Step("Запрос на изменение имени")
-    public Response changeName(String authToken, User user) {
+    public Response changeName(@Param(mode=MASKED) String authToken, User user) {
         User clonedUser = user.copy();
         clonedUser.setPassword(null);
         clonedUser.setEmail(null);
@@ -40,7 +42,7 @@ public class UpdateUserApi extends BaseApi {
 
 
     @Step("Запрос на изменение email")
-    public Response changeEmail(String authToken, User user) {
+    public Response changeEmail( @Param(mode=MASKED)String authToken, User user) {
         User clonedUser = user.copy();
         clonedUser.setPassword(null);
         clonedUser.setName(null);
@@ -49,7 +51,7 @@ public class UpdateUserApi extends BaseApi {
     }
 
     @Step("Запрос на изменение пароля")
-    public Response changePassword(String authToken, User user) {
+    public Response changePassword(@Param(mode=MASKED) String authToken, User user) {
         User clonedUser = user.copy();
         clonedUser.setName(null);
         clonedUser.setEmail(null);

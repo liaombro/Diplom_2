@@ -171,8 +171,7 @@ public class GetOrdersOfUserTest extends TestBase {
         Assert.assertEquals("Поле todayTotal должно увеличиться на 1 после совершения заказа", expectedTotal, actualTotal);
     }
 
-    /*
-    Этот тест падает
+
     @Test
     @DisplayName("Эндпойнт возвращает не более 50 заказов")
     public void noMoreThan50OrdersAreReturned(){
@@ -188,6 +187,5 @@ public class GetOrdersOfUserTest extends TestBase {
         Assert.assertEquals("Метод должен возвращать не более 50 заказов " + authToken, expectedSize, actualSize);
 
     }
-*/
 }
 
